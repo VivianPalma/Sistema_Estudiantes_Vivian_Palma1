@@ -1,0 +1,109 @@
+# Estructura base
+estudiantes = []
+
+def agregar_estudiante(nombre, edad, promedio, grado, materias, profesor_favorito):
+    estudiante = {
+        "nombre": nombre,
+        "edad": edad,
+        "promedio": promedio,
+        "grado": grado,
+        "materias": materias,
+        "profesor_favorito": profesor_favorito
+    }
+    estudiantes.append(estudiante)
+
+def eliminar_estudiante(nombre):
+    estudiante = buscar_estudiante(nombre)
+    if estudiante:
+        estudiantes.remove(estudiante)
+        print(f"\nEstudiante '{nombre}' eliminado.")
+    else:
+        print("\nEstudiante no encontrado.")
+
+def actualizar_promedio(nombre, nuevo_promedio):
+    estudiante = buscar_estudiante(nombre)
+    if estudiante:
+        estudiante["promedio"] = nuevo_promedio
+        print(f"\nPromedio de '{nombre}' actualizado a {nuevo_promedio}.")
+    else:
+        print(f"\nEstudiante '{nombre}' no encontrado.")
+
+def buscar_estudiante(nombre):
+    for estudiante in estudiantes:
+        if estudiante["nombre"] == nombre:
+            return estudiante
+    return None
+
+def calcular_promedio_general():
+    if not estudiantes:
+        return 0
+    total = sum(est["promedio"] for est in estudiantes)
+    return total / len(estudiantes)
+
+def mostrar_todos():
+    print("\n=== LISTA DE ESTUDIANTES ===")
+    for est in estudiantes:
+        print(f"{est['nombre']} - Edad: {est['edad']}, Promedio: {est['promedio']}, Grado: {est['grado']}, Materias: {', '.join(est['materias'])}, Profesor favorito: {est['profesor_favorito']}")
+
+# Datos iniciales
+agregar_estudiante("Daniela", 16, 9.2, "11º", ["Quimica", "Inglés"], "Martinez")
+agregar_estudiante("Laura", 15, 9.8, "11º", ["Física", "Cívica"], "Pedro")
+agregar_estudiante("Jane", 16, 9.0, "11º", ["Arte", "Física"], "Julian")
+agregar_estudiante("William", 15, 9.8, "11º", ["Arte", "Matematicas"], "Pedro")
+agregar_estudiante("Justin", 16, 9.5, "11º", ["Deportes", "Ciencias"], "Jose")
+
+# Menú
+def menu():
+    while True:
+        print("\n===== MENÚ DEL SISTEMA DE ESTUDIANTES =====")
+        print("1. Agregar estudiante")
+        print("2. Buscar estudiante")
+        print("3. Actualizar promedio")
+        print("4. Eliminar estudiante")
+        print("5. Mostrar todos los estudiantes")
+        print("6. Calcular promedio general")
+        print("7. Salir")
+
+        opcion = input("\nElige una opción (1-7): ")
+
+        if opcion == "1":
+            nombre = input("Nombre: ")
+            edad = int(input("Edad: "))
+            promedio = float(input("Promedio: "))
+            grado = input("Grado: ")
+            materias = input("Materias (separadas por coma): ").split(",")
+            profesor_favorito = input("Profesor favorito: ")
+            agregar_estudiante(nombre, edad, promedio, grado, [m.strip() for m in materias], profesor_favorito)
+
+        elif opcion == "2":
+            nombre = input("Nombre del estudiante a buscar: ")
+            estudiante = buscar_estudiante(nombre)
+            if estudiante:
+                print(estudiante)
+            else:
+                print("Estudiante no encontrado.")
+
+        elif opcion == "3":
+            nombre = input("Nombre del estudiante a actualizar: ")
+            nuevo_promedio = float(input("Nuevo promedio: "))
+            actualizar_promedio(nombre, nuevo_promedio)
+
+        elif opcion == "4":
+            nombre = input("Nombre del estudiante a eliminar: ")
+            eliminar_estudiante(nombre)
+
+        elif opcion == "5":
+            mostrar_todos()
+
+        elif opcion == "6":
+            print(f"\nPromedio general del grupo: {calcular_promedio_general():.2f}")
+
+        elif opcion == "7":
+            print("¡Hasta luego!")
+            break
+
+        else:
+            print("Opción no válida, intenta de nuevo.")
+
+# Ejecutar menú
+menu()
